@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Pet Finder Admin</title>
+        <title>Customer-Login</title>
 
         <!-- Fonts -->
         <!-- Font Awesome -->
@@ -29,14 +29,7 @@
     
 
 </head> 
-@if (Session::has('success'))
-        <div id="successMessage" class="success-message">
-            <div class="success-content">
-                <span>{{ Session::get('success') }}</span>
-                <button class="close-button" onclick="closeSuccessMessage()">&times;</button>
-            </div>
-        </div>
-    @endif
+<body>
 <section class="vh-100" style="background-color: #9A616D;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -50,19 +43,19 @@
             <div class="col-md-6 col-lg-7 col-sm-6 d-flex align-items-center">
               <div class="card-body p-4 p-lg-5 text-black">
 
-                <form action="{{ route('admin.login') }}" method="post">
+                <form action="{{ route('client-login-handler') }}" method="post">
                 @csrf
                   <div class="d-flex align-items-center mb-3 pb-1">
                     <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
-                    <span class="h1 fw-bold mb-0">Pet Finder Admin</span>
+                    <span class="h1 fw-bold mb-0">Login here by using your security code </span>
                   </div>
 
                   <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
 
                   <div class="form-outline mb-4">
-                    <input type="text" id="name" name="name" class="form-control form-control-lg" />
-                    <label class="form-label" for="form2Example17">Enter User Name</label>
-                    @error('name')
+                    <input type="text" id="security_code" name="security_code" class="form-control form-control-lg" />
+                    <label class="form-label" for="form2Example17">Enter your security code</label>
+                    @error('security_code')
                     <div class="error">{{ $message }}</div>
                     @enderror
                   </div>
@@ -74,11 +67,9 @@
                     <div class="error">{{ $message }}</div>
                      @enderror
                   </div>
-
                   <div class="pt-1 mb-4">
                     <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
                   </div>
-                  <p class="text-danger">Dont have an account?<a href="{{ route('admin.create') }}">Click here</a> to create One</p>
                 
                 </form>
 
@@ -90,47 +81,6 @@
     </div>
   </div>
 </section>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        @if (Session::has('success'))
-            showSuccessMessage();
-        @endif
-    });
 
-    function showSuccessMessage() {
-        var successMessage = document.getElementById('successMessage');
-        successMessage.style.display = 'block';
-
-        setTimeout(function () {
-            closeSuccessMessage();
-        }, 3000); // Automatically close after 5 seconds
-    }
-
-    function closeSuccessMessage() {
-        var successMessage = document.getElementById('successMessage');
-        successMessage.style.display = 'none';
-    }
-</script>
-
-
-
-
-<script src="js/jquery.min.js"></script>
-<script src="js/jquery-migrate-3.0.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.easing.1.3.js"></script>
-<script src="js/jquery.waypoints.min.js"></script>
-<script src="js/jquery.stellar.min.js"></script>
-<script src="js/jquery.animateNumber.min.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery.timepicker.min.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/jquery.magnific-popup.min.js"></script>
-<script src="js/scrollax.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-<script src="js/google-map.js"></script>
-<script src="js/main.js"></script>
 </body>
 </html>

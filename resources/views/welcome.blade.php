@@ -8,7 +8,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!-- Styles -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
  
@@ -59,8 +59,13 @@
 	        <ul class="navbar-nav ml-auto">
 	        	<li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
 	        	<li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-                <li class="nav-item"><a href="{{ route('register') }}" class="nav-link">Register Yourself</a></li>
-	          <li class="nav-item"><a href="{{ route('loginClient') }}" class="nav-link">Login</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-toggle="modal" data-target="#securityModal">if you have a security code please click here</a></li>
+				@if (session('petOwnerCode'))
+				<li class="nav-item"><a href="{{ route('view-owner-profile') }}" class="nav-link">View Owner Profile</a></li>
+				<li class="nav-item"><a href="{{ route('owner-logout') }}" class="nav-link">Logout</a></li>
+				@else
+				<li class="nav-item"><a href="{{ route('client-login') }}" class="nav-link">Login</a></li>
+				@endif
 	        </ul>
 	      </div>
 	    </div>
@@ -224,7 +229,70 @@
     	</div>
     </section>
   <!-- End Affordable Section-->
+<!--Modal Section for security code  -->
+<!-- Link to trigger the modal -->
 
+<!-- The Modal -->
+<div class="modal fade" id="securityModal" tabindex="-1" aria-labelledby="securityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="securityModalLabel">Enter Security code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="securityForm" action="{{ route('check.security.code') }}" method="POST">
+                    @csrf
+                    <input type="text" name="security_code" id="security_code" class="form-control" placeholder="Enter Security Code" required>
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </form>
+                <div id="security-message"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--security code not matched  -->
+ <!-- Popup Modal -->
+ <div class="modal" id="successModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Congratulations!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if (Session::has('success'))
+                        {{ Session::get('success') }}
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    // Check the session variable for security code match status
+    @if(session('security_code_match') === false)
+        $(document).ready(function() {
+            // Display the pop-up message inside the modal
+            $('#security-message').html('<div class="alert alert-danger">Sorry,Security code does not match.Please try again</div>');
+        });
+    @endif
+</script>
+
+<script>
+    $(document).ready(function () {
+        @if (Session::has('success'))
+            $('#successModal').modal('show');
+        @endif
+    });
+</script>
   <!-- Footer -->
   <footer class="footer">
 			<div class="container">
@@ -239,9 +307,6 @@
 						<ul class="list-unstyled">
               <li><a href="#" class="py-2 d-block">Home</a></li>
               <li><a href="#" class="py-2 d-block">About</a></li>
-              <li><a href="#" class="py-2 d-block">Services</a></li>
-              <li><a href="#" class="py-2 d-block">Works</a></li>
-              <li><a href="#" class="py-2 d-block">Blog</a></li>
               <li><a href="#" class="py-2 d-block">Contact</a></li>
             </ul>
 					</div>
@@ -276,7 +341,7 @@
 
      <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-
+  
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-migrate-3.0.1.min.js"></script>
 <script src="js/popper.min.js"></script>

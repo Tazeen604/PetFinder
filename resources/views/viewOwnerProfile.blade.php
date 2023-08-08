@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Finder Page</title>
+        <title>Owner Profile</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -58,6 +58,13 @@
 	        <ul class="navbar-nav ml-auto">
 	        	<li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
 	        	<li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-toggle="modal" data-target="#securityModal">if you have a security code please click here</a></li>
+				@if (session('petOwnerCode'))
+				<li class="nav-item"><a href="{{ route('view-owner-profile') }}" class="nav-link">View Owner Profile</a></li>
+				<li class="nav-item"><a href="{{ route('owner-logout') }}" class="nav-link">Logout</a></li>
+				@else
+				<li class="nav-item"><a href="{{ route('client-login') }}" class="nav-link">Login</a></li>
+				@endif
 	        </ul>
 	      </div>
 	    </div>
@@ -67,88 +74,52 @@
     	<div class="container">
     		<div class="row justify-content-center">
           <div class="col-md-7 heading-section text-center ftco-animate">
-            <h2>Welcome to Pet Finder</h2>
+            <h2>Owner Profile</h2>
           </div>
         </div>
     		<div class="row">
     			<div class="col-md-6 ftco-animate">
 	          <div class="block-7">
-              <div class="img" style="background-image: url(images/pricing-1.jpg);"></div>
-                <div> <p>Thank you for helping my friend.It is so nice of you.You can click on the following button to send email to the owner
-                    It will be auto-generated email.Your location will be send to the owner.OR you can contact the owner on the following number.
-                    Again Thank you for saving a life.
-                </p></div>
+	          	<div class="img" style="background-image: url(images/pricing-1.jpg);"></div>
 	            <div class="text-center p-4">
 	            	<span class="excerpt d-block">Owner Information</span>
-		            <ul class="pricing-text mb-5 text-success">
-                    @if ($owner)
-                     <p>Name: {{ $owner->name }}</p>
-                     <p>Email: {{ $owner->email }}</p>
-                     <p>Address: {{ $owner->address }}</p>
-                     <p>Phone No: {{ $owner->phone_no }}</p> 
-                     @else
-                     <p>No owner found for the provided security code.</p>
-                     @endif
+		            <ul class="pricing-text mb-5 text-warning">
+                    <p>Name: {{ $owner->name }}</p>
+    <p>Email: {{ $owner->email }}</p>
+    <p>Address: {{ $owner->address }}</p>
+    <p>Phone No: {{ $owner->phone_no }}</p> 
+    <p>Country {{ $owner->country }}</p> 
+    <p>State: {{ $owner->state }}</p> 
+    <p>City: {{ $owner->city }}</p> 
+    <p>Zip Code: {{ $owner->zip_code }}</p> 
 		            </ul>
 
 	            </div>
-                <form id="location-form" action="{{ route('send-location-email', ['code' => $owner->security_code]) }}" method="POST">
-                <a href="#" id="get-location-btn" class="btn btn-primary d-block px-2 py-3">Click here to email your location to the owner </a>
-</form>
-            </div>
+	          </div>
+	        </div>
+	        <div class="col-md-6 ftco-animate">
+	          <div class="block-7">
+              @foreach ($pets as $pet)
+	          	<div class="img" style="background-image:url({{ asset($pet->uploadPet) }});"></div>
+	            <div class="text-center p-4">
+	            	<span class="excerpt d-block">Your Pet</span>     
+		            <ul class="pricing-text mb-5 text-warning">
+                   
+                    <p>Name: {{ $pet->petname }}</p>
+        <p>Species: {{ $pet->species }}</p>
+        <p>Color: {{ $pet->color }}</p>
+        <p>Gender: {{ $pet->gender }}</p>
+        <p>Age: {{ $pet->age }}</p>
+        @endforeach
+		            </ul>
+	            </div>
+	          </div>
 	        </div>
 	      </div>
     	</div>
     </section>
     <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-   
-   
     <script src="js/jquery.min.js"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const getLocationBtn = document.getElementById("get-location-btn");
-        getLocationBtn.addEventListener("click", getLocation);
-    });
-
-    function getLocation() {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-
-                // Populate hidden form fields with location data
-                const latitudeInput = document.createElement("input");
-                latitudeInput.type = "hidden";
-                latitudeInput.name = "latitude";
-                latitudeInput.value = latitude;
-
-                const longitudeInput = document.createElement("input");
-                longitudeInput.type = "hidden";
-                longitudeInput.name = "longitude";
-                longitudeInput.value = longitude;
-
-                const messageInput = document.createElement("input");
-                messageInput.type = "hidden";
-                messageInput.name = "message";
-                messageInput.value = I have found your Pet.This is my location;
-
-                const form = document.getElementById("location-form");
-                form.appendChild(latitudeInput);
-                form.appendChild(longitudeInput);
-                form.appendChild(messageInput);
-
-                // Submit the form
-                form.submit();
-            });
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
-    }
-</script>
-
-
-
-
 <script src="js/jquery-migrate-3.0.1.min.js"></script>
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>

@@ -13,10 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('security_codes', function (Blueprint $table) {
+        Schema::create('pets', function (Blueprint $table) {
             $table->id();
-            $table->string('security_code');
-            $table->string('qr_code');
+            $table->string('security_code')->unique();
+            $table->string('name');
+            $table->string('gender');
+            $table->integer('age');
+            $table->string('species');
+            $table->string('color');
+            $table->string('uploadPet')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('security_codes');
+        Schema::dropIfExists('pets');
     }
 };

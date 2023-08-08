@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OwnerController;
+use App\Http\Controllers\PetController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,16 +21,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/register', function () {
-    return view('register'); // Assuming you have a login view named 'login.blade.php'
+Route::get('/register/{securityCode}', function ($securityCode) {
+    return view('register', compact('securityCode'));
 })->name('register');
 Route::get('/loginClient', function () {
     return view('loginClient'); // Assuming you have a login view named 'login.blade.php'
-})->name('loginClient');
+})->name('client-login');
+//post related client login
+Route::post('/ownerLogin', [OwnerController::class, 'ownerLogin'])->name('client-login-handler');
 
 Route::get('/admin', function () {
     return view('admin.admin_login');
-});
+})->name('admin-login');
 Route::post('/admin', function () {
     return view('admin.admin_login');
 })->name('admin');
@@ -52,6 +55,8 @@ Route::get('/admin/pets', function () {
 
 Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
 Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
+//logout admin
+Route::get('/admin/logout', [LoginController::class, 'logout'])->name('admin.logout');
 //Store owner data
 Route::post('/register', [OwnerController::class, 'store'])->name('owners');
 //redirecting to pet Regsitration
@@ -59,5 +64,49 @@ Route::get('/pet_registration/{token}', function () {
     return view('pet_registration');
 })->name('pet_registration');
 //Special Route for QR code redirection URL
-Route::get('/qr-code-redirect/{code}', [DashboardController::class, 'generateQRcode'])
-    ->name('finder_page');
+Route::get('/qr-code-redirect/{code}', [DashboardController::class, 'redirectURL'])->name('finder_page');
+//send email to owner
+Route::post('/send-location-email/{code}', [DashboardController::class, 'sendLocationEmail'])
+    ->name('send-location-email');
+//QR code to save in the database
+Route::post('/generate-qrcode', [DashboardController::class, 'generateQRCode'])->name('generate-qrcode');
+//Show QR codes
+Route::get('/generate-qrcode/{code}', [DashboardController::class, 'showGeneratedQRCode'])->name('showQRcode');
+//security code check
+Route::post('/check-security-code', [OwnerController::class, 'checkSecurityCode'])->name('check.security.code');
+//register your pet 
+Route::post('/register-pet', [PetController::class, 'registerPet'])->name('pet.register');
+//view owner profile
+Route::get('/viewOwnerProfile', [OwnerController::class, 'showOwner'])->name('view-owner-profile');
+
+//Owner logout
+Route::get('/ownerlogout', [OwnerController::class, 'logout'])->name('owner-logout');
+
+
+
+
+//check session for pet owner using middleware
+Route::group(['middleware' => 'CheckOwnerSession'], function () {
+    // Routes that require custom session data check
+    Route::get('/pet_registration/{token}', function () {
+        return view('pet_registration');
+    })->name('pet_registration');   
+
+    //view owner porofile
+     Route::get('/viewOwnerProfile', [OwnerController::class, 'showOwner'])
+    ->name('view-owner-profile');
+
+});
+//Check Admin Session using middleware
+Route::group(['middleware' => 'checkAdminSession'], function () {
+    // Routes that require custom session data check
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    //admin customers
+    Route::get('/admin/customers', function () {
+        return view('admin.customers');
+    })->name('customers');
+    //Pets 
+    Route::get('/admin/pets', function () {
+        return view('admin.pets');
+    })->name('pets'); 
+});

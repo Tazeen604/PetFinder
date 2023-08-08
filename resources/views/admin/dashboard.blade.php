@@ -29,8 +29,17 @@
       return randomCode;
     }
   </script>
+    <link rel="stylesheet" href="{{ asset('css/successMsgStyle.css') }}"/>
     </head>
     <body class="sb-nav-fixed">
+    @if (Session::has('success'))
+        <div id="successMessage" class="success-message">
+            <div class="success-content">
+                <span>{{ Session::get('success') }}</span>
+                <button class="close-button" onclick="closeSuccessMessage()">&times;</button>
+            </div>
+        </div>
+    @endif
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-danger">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.html">Admin - Pet Finder</a>
@@ -48,7 +57,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -90,19 +99,13 @@
                                 <br><br><button class="btn btn-success" id="btnNavbarSearch" type="button" onclick="generateSecurityCode()">Generate Random Security Code</button>
                               </p>
 
-                            <form class="d-none d-md-inline-block form-inline " method="post" action="">
+                            <form class="d-none d-md-inline-block form-inline " method="POST" action="{{ route('generate-qrcode') }}">
                               @csrf
-                <div class="input-group">
-                    <input class="form-control" type="text" id="securityCode" name="securityCode" placeholder="Your Security Code" />
-                    <button class="btn btn-success" id="btnNavbarSearch" type="button">Generate QR code</button>
-                  
-                </div>
-                <div class="mt-5"> <button class="btn btn-primary btn btn-lg" id="save" name="save" type="submit">Save</button></div>
-            </form>       
-                            </div>
-                        </div>
-                        </div>
-                    </div>
+                               <div class="input-group">
+                               <input class="form-control" type="text" id="securityCode" name="securityCode" placeholder="Your Security Code" />  
+                               </div>
+                               <div class="mt-5"> <button class="btn btn-primary " id="save" name="save" type="submit">Generate QR code and Save</button></div>
+                           </form>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -113,6 +116,32 @@
                 </footer>
             </div>
         </div>
+
+        <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        @if (Session::has('success'))
+            showSuccessMessage();
+        @endif
+    });
+
+    function showSuccessMessage() {
+        var successMessage = document.getElementById('successMessage');
+        successMessage.style.display = 'block';
+
+        setTimeout(function () {
+            closeSuccessMessage();
+        }, 25000); // Automatically close after 5 seconds
+    }
+
+    function closeSuccessMessage() {
+        var successMessage = document.getElementById('successMessage');
+        successMessage.style.display = 'none';
+    }
+</script>
+
+
+
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>

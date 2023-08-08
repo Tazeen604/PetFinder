@@ -37,7 +37,7 @@
         <div class="card" style="border-radius: 1rem;">
           <div class="row g-0">
             <div class="col-md-6 col-lg-5 col-sm-6 d-none d-md-block">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
+              <img src="{{ asset('images/img.jpg') }}"
                 alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
             </div>
             <div class="col-md-6 col-lg-7 col-sm-6 d-flex align-items-center">
@@ -69,9 +69,9 @@
                   </div>
 
                   <div class="pt-1 mb-4">
-                    <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+                    <button class="btn btn-dark btn-lg btn-block" type="submit">Register</button>
                   </div>
-
+                  <p class="text-danger">If you have an account Please <a href="{{ route('admin-login') }}">Login here</a> to create One</p>
                 
                 </form>
 
