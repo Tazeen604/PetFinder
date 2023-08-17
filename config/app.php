@@ -177,6 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
     ],
 
@@ -193,6 +194,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
     'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+    'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         // ...
     ])->toArray(),
 

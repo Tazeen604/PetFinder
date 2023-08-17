@@ -23,14 +23,22 @@ class OwnerController extends Controller
         $securityCode = $request->input('security_code');
         // Check the security code with your database table (replace 'users' with your actual table name)
         $matched = \DB::table('pet_qr_code')->where('security_code', $securityCode)->exists();
+        $matchedOwners = \DB::table('owners')->where('security_code', $securityCode)->exists();
+        if(!$matchedOwners){
         if ($matched) {
             // Redirect to the full registration form with the readonly security code field
+            session(['securityCodeOwner' => $securityCode]);
             return redirect()->route('register', ['securityCode' => $securityCode]);
         } else {
             // Show a message that the security code does not match
             $request->session()->flash('security_code_match', false);
         return back();
         }
+     } else{
+        $request->session()->flash('security_code_already_exist', false);
+            return back();
+        
+    }
     }
     /**
      * Store a newly created resource in storage.

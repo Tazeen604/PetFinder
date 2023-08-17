@@ -67,9 +67,17 @@
 				</div>
 			</div>
 			
+      
 			<form class="form-detail" action="{{ route('owners') }}" method="post" id="myform">
+			@csrf
+			<p class="social-icons">Register with</p>
+              <hr>
+			<div class="social-icons">
+            <a href="{{ route('google.signup') }}" class="google-icon"><i class="fab fa-google"></i></a>
+          <a href="#" class="facebook-icon"><i class="fab fa-facebook-f"></i></a>
+        </div>
 			<h2>Create Your Account</h2>
-				@csrf
+				
 				<div class="form-row">
                     <div class="form-group">
 					@if(isset($securityCode))
@@ -162,15 +170,10 @@
 					<input type="submit" name="register" class="register" value="Create Your Profile">
                   
 				</div>
-               <p class="social-icons">Register with</p>
-              <hr>
-        <div class="social-icons">
-            <a href="#" class="google-icon"><i class="fab fa-google"></i></a>
-          <a href="#" class="facebook-icon"><i class="fab fa-facebook-f"></i></a>
-        </div>
-      <strong>  <a href="" class="social-icons">Already have an account</a></strong>
+              
+			  <strong>  <a href="" class="social-icons">Already have an account</a></strong>
 			</form>
-          
+			
 		</div>
       
 	</div>

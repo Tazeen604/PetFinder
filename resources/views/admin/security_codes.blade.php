@@ -11,25 +11,6 @@
         <link rel="stylesheet" href="{{ asset('css/admin_styles.css') }}">
 
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <script>
-    function generateSecurityCode() {
-      const securityCodeDisplay = document.getElementById('securityCode');
-      const randomCode = generateRandomCode();
-      securityCodeDisplay.value =  randomCode;
-    }
-
-    function generateRandomCode() {
-      const length = 8; // Change the length of the random code as needed
-      const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      let randomCode = '';
-      for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * charset.length);
-        randomCode += charset[randomIndex];
-      }
-      return randomCode;
-    }
-  </script>
-    <link rel="stylesheet" href="{{ asset('css/successMsgStyle.css') }}"/>
     </head>
     <body class="sb-nav-fixed">
     @if (Session::has('success'))
@@ -80,7 +61,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                Pets
                             </a>
-                            <a class="nav-link" href="{{ route('viewSecurityCodes') }}">
+                            <a class="nav-link" href="">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                View All Security Codes
                             </a>
@@ -91,62 +72,42 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-
-                        <h1 class="mt-4">Dashboard</h1>
+                    <h1 class="mt-4">All Security Codes</h1>
                         <div class="row">
-                          <div class="col-sm-2 col-md-2 col-lg-2"></div>
-                          <div class="col-sm-10 col-md-10 col-lg-10">
-                        <div class="card mb-4">
-                            <div class="card-body">
-                              <h3>Welcome to Pet Finder </h3><p>You can generate security code here randomly or manually as per your requirement
-                                If you want to generate the random security code Please click on the following button 
-                                <br><br><button class="btn btn-success" id="btnNavbarSearch" type="button" onclick="generateSecurityCode()">Generate Random Security Code</button>
-                              </p>
-
-                            <form class="d-none d-md-inline-block form-inline " method="POST" action="{{ route('generate-qrcode') }}">
-                              @csrf
-                               <div class="input-group">
-                               <input class="form-control" type="text" id="securityCode" name="securityCode" placeholder="Your Security Code" />  
-                               </div>
-                               <div class="mt-5"> <button class="btn btn-primary " id="save" name="save" type="submit">Generate QR code and Save</button></div>
-                           </form>
-                </main>
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Pet Finder 2023</div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
-        </div>
-
-        <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        @if (Session::has('success'))
-            showSuccessMessage();
-        @endif
-    });
-
-    function showSuccessMessage() {
-        var successMessage = document.getElementById('successMessage');
-        successMessage.style.display = 'block';
-
-        setTimeout(function () {
-            closeSuccessMessage();
-        }, 25000); // Automatically close after 5 seconds
-    }
-
-    function closeSuccessMessage() {
-        var successMessage = document.getElementById('successMessage');
-        successMessage.style.display = 'none';
-    }
-</script>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Security Code</th>
+                <th>QR Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($securityCodes as $securityCode)
+                <tr>
+                    <td>{{ $securityCode->id }}</td>
+                    <td>{{ $securityCode->security_code }}</td>
+                    <td>
+                        <img src="{{ asset('qrcodes/' . $securityCode->security_code . '.svg') }}" alt="QR Code">
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 
 
 
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>

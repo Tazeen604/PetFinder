@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\GoogleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -70,8 +71,6 @@ Route::post('/send-location-email/{code}', [DashboardController::class, 'sendLoc
     ->name('send-location-email');
 //QR code to save in the database
 Route::post('/generate-qrcode', [DashboardController::class, 'generateQRCode'])->name('generate-qrcode');
-//Show QR codes
-Route::get('/generate-qrcode/{code}', [DashboardController::class, 'showGeneratedQRCode'])->name('showQRcode');
 //security code check
 Route::post('/check-security-code', [OwnerController::class, 'checkSecurityCode'])->name('check.security.code');
 //register your pet 
@@ -81,6 +80,15 @@ Route::get('/viewOwnerProfile', [OwnerController::class, 'showOwner'])->name('vi
 
 //Owner logout
 Route::get('/ownerlogout', [OwnerController::class, 'logout'])->name('owner-logout');
+
+//view Security codes 
+Route::get('/view-security-codes',  [DashboardController::class, 'viewSecurityCodes'])->name('viewSecurityCodes');
+//google sign up routes
+Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.signup');
+Route::get('/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+//google sign in routes
+Route::get('/loginClient/google', [GoogleController::class, 'redirectToGoogle'])->name('google.signin');
+Route::get('/loginClient/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 
 

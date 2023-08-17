@@ -5,6 +5,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Intervention\Image\Facades\Image;
 use App\Models\PetQRCode;
 use Session;
+use Illuminate\Support\Facades\Response;
 
 class DashboardController extends Controller
 {
@@ -23,19 +24,24 @@ class DashboardController extends Controller
         $qrCodePath = public_path('qrcodes/') . $code . '.svg';
         $qrCodeUrl = route('finder_page', ['code' => $code]);
         QrCode::format('svg')->size(100)->generate($qrCodeUrl,$qrCodePath);
+         // Set up the response for download
+    $response = Response::download($qrCodePath, $code . '.svg', [
+        'Content-Type' => 'image/svg+xml',
+    ]);
          // Save data to the database
          $qrCodeData = new PetQRCode();
          $qrCodeData->security_code = $code;
          $qrCodeData->qr_code_url = $qrCodeUrl;
          $qrCodeData->save();
          Session::flash('success', 'QR Code created successfully');
-         return redirect()->route('showQRcode', ['code' => $code]);
+         return $response;
     }
 
-    public function showGeneratedQRCode($code)
+    public function viewSecurityCodes()
     {
-        $qrCodePathView = public_path('qrcodes/') . $code . '.svg';
-        return view('/admin/dashboard', compact('qrCodePathView'));
+        $securityCodes = PetQRCode::all(); // Assuming you have a PetQRCode model
+    
+        return view('/admin/security_codes', compact('securityCodes'));
     }
 
   
