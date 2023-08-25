@@ -51,10 +51,9 @@ class DashboardController extends Controller
         $owner = Owner::where('security_code', $code)->first();
 
         if ($owner) {
-            return redirect()->route('finder_page', ['code' => $code])
-            ->with('owner', $owner);
+            return view('finder_page', compact('owner'));
         } else {
-            return view('owner-not-found');
+            return view('/');
         }
     }
 

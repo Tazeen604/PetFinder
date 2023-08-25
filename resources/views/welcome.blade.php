@@ -51,15 +51,15 @@
 <!--Start of Navbar -->
 		<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-muted" id="ftco-navbar">
 	    <div class="container">
-	    	<a class="navbar-brand" href="index.html"><span class="flaticon-pawprint-1 mr-2"></span>Pet Finder</a>
+	    	<a class="navbar-brand" href="#"><span class="flaticon-pawprint-1 mr-2"></span>Pet Finder</a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="fa fa-bars"></span> Menu
 	      </button>
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	        	<li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
-	        	<li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-                <li class="nav-item"><a href="#" class="nav-link" data-toggle="modal" data-target="#securityModal">if you have a security code please click here</a></li>
+	        	<li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
+	        	<li class="nav-item"><a href="#" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#" class="nav-link" data-toggle="modal" data-target="#securityModal">if you have a security code,please register your pet here</a></li>
 				@if (session('petOwnerCode'))
 				<li class="nav-item"><a href="{{ route('view-owner-profile') }}" class="nav-link">View Owner Profile</a></li>
 				<li class="nav-item"><a href="{{ route('owner-logout') }}" class="nav-link">Logout</a></li>
@@ -71,6 +71,7 @@
 	    </div>
 	  </nav>
     <!-- END nav -->
+	<div id="security-message"></div>
     <div class="hero-wrap js-fullheight" style="background-image: url('images/bg_1.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
@@ -81,7 +82,7 @@
         </div>
       </div>
     </div>
-
+	
 <!--2nd Section -->
 <section class="ftco-section bg-light ftco-no-pt ftco-intro">
     	<div class="container">
@@ -246,7 +247,7 @@
                     <input type="text" name="security_code" id="security_code" class="form-control" placeholder="Enter Security Code" required>
                     <button type="submit" class="btn btn-primary mt-3">Submit</button>
                 </form>
-                <div id="security-message"></div>
+              
             </div>
         </div>
     </div>
@@ -281,8 +282,21 @@
     @if(session('security_code_match') === false)
         $(document).ready(function() {
             // Display the pop-up message inside the modal
-            $('#security-message').html('<div class="alert alert-danger">Sorry,Security code does not match.Please try again</div>');
+			var messageDiv = $('<div class="alert alert-danger">Sorry, Security code does not match. Please try again</div>');
+            $('#security-message').html(messageDiv);
+
+    // Delay for 10 seconds and then fade out
+   			 messageDiv.delay(2000).fadeOut(500);
         });
+	@elseif(session('security_code_exist') === false)
+		$(document).ready(function() {
+			var messageDiv = $('<div class="alert alert-success">Security Code already Exist.You have register your pet for another pet registration you need to buy another security code.</div>');
+            // Display the pop-up message inside the modal
+            $('#security-message').html(messageDiv);
+			messageDiv.delay(5000).fadeOut(500);
+        });
+	@else
+
     @endif
 </script>
 
@@ -314,7 +328,7 @@
 						<h2 class="footer-heading">Have a Questions?</h2>
 						<div class="block-23 mb-3">
               <ul>
-                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+                <li><span class="icon fa fa-map"></span><span class="text">Your address Brazil</span></li>
                 <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
                 <li><a href="#"><span class="icon fa fa-paper-plane"></span><span class="text">info@yourdomain.com</span></a></li>
               </ul>

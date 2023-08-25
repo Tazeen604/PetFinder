@@ -46,13 +46,8 @@ Route::post('/admin/login', [LoginController::class, 'login'])->name('admin.logi
 //view dashboard
 Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 //admin customers
-Route::get('/admin/customers', function () {
-    return view('admin.customers');
-})->name('customers');
-//Pets 
-Route::get('/admin/pets', function () {
-    return view('admin.pets');
-})->name('pets');
+Route::get('/customers_pets', [OwnerController::class, 'viewAllCustomers'])->name('allcustomers');
+
 
 Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
 Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
@@ -64,8 +59,12 @@ Route::post('/register', [OwnerController::class, 'store'])->name('owners');
 Route::get('/pet_registration/{token}', function () {
     return view('pet_registration');
 })->name('pet_registration');
+//register your pet 
+Route::post('/register-pet', [PetController::class, 'registerPet'])->name('pet.register');
+
+
 //Special Route for QR code redirection URL
-Route::get('/qr-code-redirect/{code}', [DashboardController::class, 'redirectURL'])->name('finder_page');
+Route::get('/finder_page/{code}', [DashboardController::class, 'redirectURL'])->name('finder_page');
 //send email to owner
 Route::post('/send-location-email/{code}', [DashboardController::class, 'sendLocationEmail'])
     ->name('send-location-email');
@@ -73,8 +72,7 @@ Route::post('/send-location-email/{code}', [DashboardController::class, 'sendLoc
 Route::post('/generate-qrcode', [DashboardController::class, 'generateQRCode'])->name('generate-qrcode');
 //security code check
 Route::post('/check-security-code', [OwnerController::class, 'checkSecurityCode'])->name('check.security.code');
-//register your pet 
-Route::post('/register-pet', [PetController::class, 'registerPet'])->name('pet.register');
+
 //view owner profile
 Route::get('/viewOwnerProfile', [OwnerController::class, 'showOwner'])->name('view-owner-profile');
 

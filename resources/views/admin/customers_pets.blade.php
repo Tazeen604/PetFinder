@@ -53,15 +53,11 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                Dashboard
                             </a>
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ route('allcustomers') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                Customers
                             </a>
-                            <a class="nav-link" href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                               Pets
-                            </a>
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ route('viewSecurityCodes') }}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                View All Security Codes
                             </a>
@@ -72,38 +68,47 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                    <h1 class="mt-4">All Security Codes</h1>
+                    <h1 class="mt-4">All Customers with Their Pets</h1>
                         <div class="row">
     <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>NAME</th>
                 <th>Security Code</th>
-                <th>QR Code</th>
+                <th>EMAIL</th>
+                <th>COUNTRY</th>
+                <th>STATE</th>
+                <th>PHONE NO</th>
+                <th>PET NAME</th>
+                <th>COLOR</th>
+                <th>AGE</th>
+                <th>SPECIES</th>
+                <th>GENDER</th>
+                <th>PICTURE</th>
+                
             </tr>
         </thead>
         <tbody>
-            @foreach ($securityCodes as $securityCode)
-                <tr>
-                    <td>{{ $securityCode->id }}</td>
-                    <td>{{ $securityCode->security_code }}</td>
-                    <td>
-                        <img src="{{ asset('qrcodes/' . $securityCode->security_code . '.svg') }}" alt="QR Code">
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
+    @foreach ($combinedData as $data)
+    <tr>
+    <td>{{ $data['owner']->name }}</td>
+            <td>{{ $data['owner']->security_code }}</td>
+            <td>{{ $data['owner']->email }}</td>
+            <td>{{ $data['owner']->country }}</td>
+            <td>{{ $data['owner']->state }}</td>
+            <td>{{ $data['owner']->phone_no }}</td>
+            <td>{{ $data['pet']->petname }}</td>
+            <td>{{ $data['pet']->color }}</td>
+            <td>{{ $data['pet']->age }}</td>
+            <td>{{ $data['pet']->species }}</td>
+            <td>{{ $data['pet']->gender }}</td>
+            <td>
+               
+            </td>
+</tr>
+    @endforeach
+    </tbody>
     </table>
-
-
-
-
-
-
-
-
-
-
 
 
 

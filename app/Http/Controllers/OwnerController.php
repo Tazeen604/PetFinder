@@ -21,7 +21,6 @@ class OwnerController extends Controller
     public function checkSecurityCode(Request $request)
     {
         $securityCode = $request->input('security_code');
-        // Check the security code with your database table (replace 'users' with your actual table name)
         $matched = \DB::table('pet_qr_code')->where('security_code', $securityCode)->exists();
         $matchedOwners = \DB::table('owners')->where('security_code', $securityCode)->exists();
         if(!$matchedOwners){
@@ -35,9 +34,9 @@ class OwnerController extends Controller
         return back();
         }
      } else{
-        $request->session()->flash('security_code_already_exist', false);
-            return back();
         
+        $request->session()->flash('security_code_exist', false);
+        return back();
     }
     }
     /**
@@ -108,9 +107,31 @@ class OwnerController extends Controller
             }
             
             return redirect('/');
-        
-        
-       
+      
+
+}
+
+
+//View ALL Customers
+public function viewAllCustomers()
+{ //dd(session()->all());
+ // Get all owners (customers)
+     $owners = Owner::all();
+     // Get all pets
+     $pets = Pet::all();
+     // Use Laravel Collection methods to filter and combine data based on security code
+    $combinedData = $owners->filter(function ($owner) use ($pets) {
+        return $pets->contains('security_code', $owner->security_code);
+    })->map(function ($owner) use ($pets) {
+        $matchedPet = $pets->firstWhere('security_code', $owner->security_code);
+        return [
+            'owner' => $owner,
+            'pet' => $matchedPet,
+        ];
+    });
+
+    return view('/admin/customers_pets', compact('combinedData'));
+  
 
 }
 

@@ -11,4 +11,7 @@ class Pet extends Model
     protected $table = 'pets';
     protected $fillable =
      ['security_code','petname', 'gender', 'age', 'species', 'color', 'uploadPet'];
+
+
+
 }

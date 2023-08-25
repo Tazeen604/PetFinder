@@ -22,4 +22,6 @@ class Owner extends Model
         'password',
         'status',
     ];
+
+
 }
