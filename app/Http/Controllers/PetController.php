@@ -27,10 +27,12 @@ class PetController extends Controller
         $data = $validator->validated();
 
         if ($request->hasFile('uploadPet')) {
-           $avatarPath = $request->file('uploadPet')->store('petImages', 'public');
+           $avatar = $request->file('uploadPet');  
+           $avatarPath = public_path('petImages/') . $avatar;
             $data['uploadPet'] = $avatarPath;
-        }
 
+        }
+    
         Pet::create($data);
 
         
