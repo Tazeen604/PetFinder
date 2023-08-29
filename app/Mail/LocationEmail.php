@@ -40,7 +40,8 @@ class LocationEmail extends Mailable
     public function build()
     {
         return $this->view('emails.location')
-            ->subject('Device Location and Message');
+            ->subject('Device Location from Pet Finder')
+            ->from('tazeen.hashmat2014@gmail.com', 'Me');
     }
     /**
      * Get the message content definition.
@@ -50,7 +51,7 @@ class LocationEmail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+          //  view: 'view.location',
         );
     }
 

@@ -47,6 +47,16 @@ Route::post('/admin/login', [LoginController::class, 'login'])->name('admin.logi
 Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 //admin customers
 Route::get('/customers_pets', [OwnerController::class, 'viewAllCustomers'])->name('allcustomers');
+//edit and delete customers
+Route::get('/edit_customer/{code}', [OwnerController::class, 'editCustomers'])->name('editCustomers');
+//update customers
+Route::put('/update-owner/{code}', [OwnerController::class, 'updateOwner'])->name('updateOwner');
+//update pet
+Route::put('/update-pet/{code}', [OwnerController::class, 'updatePet'])->name('updatePet');
+//delete customer with pet
+Route::post('/delete-customers/{code}', [OwnerController::class, 'deleteCustomers'])->name('deleteCustomers');
+//delete security code
+Route::post('/delete-security-code/{code}', [DashboardController::class, 'deleteSecurityCodes'])->name('deleteSecurityCodes');
 
 
 Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
@@ -66,8 +76,7 @@ Route::post('/register-pet', [PetController::class, 'registerPet'])->name('pet.r
 //Special Route for QR code redirection URL
 Route::get('/finder_page/{code}', [DashboardController::class, 'redirectURL'])->name('finder_page');
 //send email to owner
-Route::post('/send-location-email/{code}', [DashboardController::class, 'sendLocationEmail'])
-    ->name('send-location-email');
+Route::post('/send-location-email/{code}', [DashboardController::class, 'sendLocationEmail'])->name('send-location-email');
 //QR code to save in the database
 Route::post('/generate-qrcode', [DashboardController::class, 'generateQRCode'])->name('generate-qrcode');
 //security code check
@@ -81,6 +90,11 @@ Route::get('/ownerlogout', [OwnerController::class, 'logout'])->name('owner-logo
 
 //view Security codes 
 Route::get('/view-security-codes',  [DashboardController::class, 'viewSecurityCodes'])->name('viewSecurityCodes');
+
+
+
+
+
 //google sign up routes
 Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.signup');
 Route::get('/google/callback', [GoogleController::class, 'handleGoogleCallback']);

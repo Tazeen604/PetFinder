@@ -5,6 +5,7 @@ use App\Models\Pet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Session;
+use Illuminate\Support\Facades\DB;
 
 class OwnerController extends Controller
 {
@@ -134,40 +135,70 @@ public function viewAllCustomers()
   
 
 }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+// Edit view for customers
+    public function editCustomers($code)
     {
-        //
+        $owner = Owner::where('security_code', $code)->firstOrFail();
+        $pet = Pet::where('security_code', $code)->first();
+    
+        return view('/admin/edit_customer', compact('owner', 'pet'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update Customers .
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateOwner(Request $request, $code)
     {
-        //
-    }
+        $owner = Owner::where('security_code', $code)->firstOrFail();
+     
+        // Update Owner fields
 
+        $owner->name = $request->input('name');
+        $owner->address = $request->input('address');
+        $owner->country = $request->input('country');
+        $owner->state = $request->input('state');
+        $owner->phone_no = $request->input('phone_no');
+        $owner->zip_code = $request->input('zip_code');
+        $owner->city = $request->input('city');
+        $owner->save();
+        return redirect()->route('allcustomers')->with('success', 'Profile updated successfully.');
+    }
+    
+        // Update Pet fields
+        public function updatePet(Request $request, $code)
+        {
+    $pet = Pet::where('security_code', $code)->firstOrFail();
+        $pet->petname = $request->input('petname');
+        $pet->age = $request->input('age');
+        $pet->color = $request->input('color');
+        $pet->save();
+        return redirect()->route('allcustomers')->with('success', 'Profile updated successfully.');
+    }
+  
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deleteCustomers($code)
     {
-        //
+        // Find owner and associated pet by security code
+        $owner = Owner::where('security_code', $code)->first();
+        $pet = Pet::where('security_code', $code)->first();
+    
+        if ($owner && $pet) {
+            // Delete owner and associated pet
+            $owner->delete();
+            $pet->delete();
+    
+            return redirect()->back()->with('deletedSuccess', 'Record deleted successfully.');
+        }
+    
+        return redirect()->back()->with('deletederror', 'Record not found.');
     }
+    
 
     public function ownerLogin(Request $request)
     {

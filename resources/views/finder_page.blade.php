@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Finder Page</title>
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -62,25 +62,39 @@
 	      </div>
 	    </div>
 	  </nav>
+
     <!-- END nav -->
     <section class="ftco-section bg-light">
     	<div class="container">
-    		<div class="row justify-content-center">
-          <div class="col-md-7 heading-section text-center ftco-animate">
-            <h2>Welcome to Pet Finder</h2>
+      @if(session('success'))
+
+<script>
+    alert("{{ session('success') }}");
+</script>
+
+@endif
+    	
+         <div class="hero-wrap js-fullheight" style="background-image:  url('{{ asset('images/bg_1.jpg') }}');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
+          <div class="col-md-11 ftco-animate text-center">
+          	<h1 class="mb-4">They can survive if you help them to survive </h1>
           </div>
         </div>
+      </div>
+    </div>
     		<div class="row">
-    			<div class="col-md-6 ftco-animate">
-	          <div class="block-7">
-              <div class="img" style="background-image: url(images/pricing-1.jpg);"></div>
-                <div> <p>Thank you for helping my friend.It is so nice of you.You can click on the following button to send email to the owner
+        <div class="col-md-2 col-sm-2 col-lg-2 ftco-animate"></div>
+    			<div class="col-md-8 col-sm-8 col-lg-8 ftco-animate">
+	              <div class="img" style="background-image: url('{{ asset('images/bg_1.jpg') }}');"></div>
+                <div> <h5 class="text-info mt-4">Thank you for helping my friend.It is so nice of you.You can click on the following button to send email to the owner
                     It will be auto-generated email.Your location will be send to the owner.OR you can contact the owner on the following number.
                     Again Thank you for saving a life.
-                </p></div>
+</h5></div>
 	            <div class="text-center p-4">
-	            	<span class="excerpt d-block">Owner Information</span>
-		            <ul class="pricing-text mb-5 text-success">
+	            	<h4 class="excerpt d-block text-success">Owner Information</h4>
+		            <ul class="pricing-text mb-3 text-success">
                     @if ($owner)
                      <p>Name: {{ $owner->name }}</p>
                      <p>Email: {{ $owner->email }}</p>
@@ -92,27 +106,27 @@
 		            </ul>
 
 	            </div>
-                <form id="location-form" action="{{ route('send-location-email', ['code' => $owner->security_code]) }}" method="POST">
-                <a href="#" id="get-location-btn" class="btn btn-primary d-block px-2 py-3">Click here to email your location to the owner </a>
+                <form id="location-form" name="location-form" action="{{ route('send-location-email', ['code' => $owner->security_code]) }}" method="POST">
+                  @CSRF
+                <button type="button" id="get-location-btn" class="btn btn-primary d-block px-3 py-3">Click here to email your location to the owner </button>
 </form>
-            </div>
+        
 	        </div>
 	      </div>
     	</div>
     </section>
-    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
    
-   
-    <script src="js/jquery.min.js"></script>
+  
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         const getLocationBtn = document.getElementById("get-location-btn");
         getLocationBtn.addEventListener("click", getLocation);
     });
-
+   
     function getLocation() {
+     
         if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(function(position) {
+          navigator.geolocation.getCurrentPosition(function(position) {
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
 
@@ -130,7 +144,7 @@
                 const messageInput = document.createElement("input");
                 messageInput.type = "hidden";
                 messageInput.name = "message";
-                messageInput.value = I have found your Pet.This is my location;
+                messageInput.value = "I have found your Pet.This is my location";
 
                 const form = document.getElementById("location-form");
                 form.appendChild(latitudeInput);
@@ -146,24 +160,26 @@
     }
 </script>
 
+<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/jquery-migrate-3.0.1.min.js') }}"></script>
+<script src="{{ asset('js/popper.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/jquery.easing.1.3.js') }}"></script>
+<script src="{{ asset('js/jquery.waypoints.min.js') }}"></script>
+<script src="{{ asset('js/jquery.stellar.min.js') }}"></script>
+<script src="{{ asset('js/jquery.animateNumber.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+<script src="{{ asset('js/jquery.timepicker.min.js') }}"></script>
+<script src="{{ asset('js/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
+<script src="{{ asset('js/scrollax.min.js') }}"></script>
 
-
-
-<script src="js/jquery-migrate-3.0.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.easing.1.3.js"></script>
-<script src="js/jquery.waypoints.min.js"></script>
-<script src="js/jquery.stellar.min.js"></script>
-<script src="js/jquery.animateNumber.min.js"></script>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery.timepicker.min.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/jquery.magnific-popup.min.js"></script>
-<script src="js/scrollax.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-<script src="js/google-map.js"></script>
-<script src="js/main.js"></script>
+<script src="{{ asset('js/google-map.js') }}"></script>
+<script src="{{ asset('js/main.js') }}"></script>
+
+
 
 </body>
 </html>

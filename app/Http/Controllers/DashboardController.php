@@ -6,6 +6,11 @@ use Intervention\Image\Facades\Image;
 use App\Models\PetQRCode;
 use Session;
 use Illuminate\Support\Facades\Response;
+use App\Models\Owner;
+use App\Models\Pet;
+use Mail;
+use App\Mail\LocationEmail;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -22,7 +27,7 @@ class DashboardController extends Controller
         ]);
         $code=$request->input('securityCode');
         $qrCodePath = public_path('qrcodes/') . $code . '.svg';
-        $qrCodeUrl = route('finder_page', ['code' => $code]);
+        $qrCodeUrl = url('finder_page/' . $code);
         QrCode::format('svg')->size(100)->generate($qrCodeUrl,$qrCodePath);
          // Set up the response for download
     $response = Response::download($qrCodePath, $code . '.svg', [
@@ -53,7 +58,8 @@ class DashboardController extends Controller
         if ($owner) {
             return view('finder_page', compact('owner'));
         } else {
-            return view('/');
+            $findermessage = "QR Code is not Registered Yet, Please Register your Pet";
+            return view('welcome', compact('findermessage'));
         }
     }
 
@@ -78,11 +84,46 @@ class DashboardController extends Controller
         Mail::to($owner->email)->send(new LocationEmail($locationData,$message));
 
         return redirect()->route('finder_page', ['code' => $code])
-            ->with('success', 'Email sent successfully.');
+            ->with('success', 'An email has been sent to the owner. You can contact them by their phone number. Thank you for your help.');
     } else {
         return redirect()->route('finder_page', ['code' => $code])
             ->with('error', 'Owner not found for the provided security code.');
     }
 }
+
+
+
+//delete Security codes
+public function deleteSecurityCodes($code)
+{
+    $scode = PetQRCode::where('security_code', $code)->first();
+
+    if ($scode) {
+        // Check if related owner exists
+        $ownerExists = Owner::where('security_code', $code)->exists();
+
+        // Check if related pet exists
+        $petExists = Pet::where('security_code', $code)->exists();
+
+        if ($ownerExists && $petExists) {
+            // Delete the related owner
+            Owner::where('security_code', $code)->delete();
+
+            // Delete the related pet
+            Pet::where('security_code', $code)->delete();
+        }
+            // Delete the QR code image
+            $qrCodeFileName = $scode->security_code . '.svg';
+            Storage::delete('public/qrcodes/' . $qrCodeFileName);
+
+            // Delete the QR code record
+            $scode->delete();
+
+            return redirect()->back()->with('deletedcodeSuccess', 'All Related Customers and Pets Deleted Successfully');
+        } else {
+            return redirect()->back()->with('deletedcodeerror', 'Related records not found.');
+        }
+    }
 }
+
 ?>

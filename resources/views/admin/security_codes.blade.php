@@ -65,6 +65,17 @@
                     </div>
                 </nav>
             </div>
+            @if(session('deletedcodeSuccess'))
+
+<script>
+    alert("{{ session('deletedcodeSuccess') }}");
+</script>
+@elseif(session('deletedcodeerror'))
+<script>
+    alert("{{ session('deletedcodeerror') }}");
+</script>
+@else
+@endif
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -76,6 +87,8 @@
                 <th>ID</th>
                 <th>Security Code</th>
                 <th>QR Code</th>
+                <th>Delete<p class="text-danger">(This is irreversible process,It will delete all customers and pets related to the security code)</p></th>
+           
             </tr>
         </thead>
         <tbody>
@@ -86,6 +99,11 @@
                     <td>
                         <img src="{{ asset('qrcodes/' . $securityCode->security_code . '.svg') }}" alt="QR Code">
                     </td>
+                  <td> <form action="{{ route('deleteSecurityCodes', $securityCode->security_code) }}" method="POST" style="display: inline;">
+                @csrf
+               
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this security code ?It will delete all related Customer and Pet Record also')">Delete</button>
+            </form></td>
                 </tr>
             @endforeach
         </tbody>

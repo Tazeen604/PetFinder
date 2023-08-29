@@ -117,6 +117,7 @@
             </div>
         </div>
 
+
         <script>
     document.addEventListener("DOMContentLoaded", function () {
         @if (Session::has('success'))

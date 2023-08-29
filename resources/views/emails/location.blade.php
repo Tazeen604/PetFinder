@@ -25,9 +25,8 @@
 <body>
     <div class="container">
         <h2>Device Location</h2>
-        <p>Latitude: {{ $locationData['latitude'] }}</p>
-        <p>Longitude: {{ $locationData['longitude'] }}</p>
-        <p>Message: {{ $message }}</p>
+        <p>Message: Please Click here to get pet location </p>
+        <a href="https://www.google.com/maps?q={{ $locationData['latitude'] }},{{ $locationData['longitude'] }}">Please Click here to get pet location</a>
         <!-- Other location details -->
     </div>
 </body>

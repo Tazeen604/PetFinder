@@ -9,7 +9,7 @@
         <title>Dashboard - Pet Finder</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('css/admin_styles.css') }}">
-
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
@@ -21,6 +21,20 @@
             </div>
         </div>
     @endif
+    @if(session('deletedSuccess'))
+
+<script>
+    alert("{{ session('deletedSuccess') }}");
+</script>
+
+@endif
+@if(session('deletederror'))
+
+<script>
+    alert("{{ session('deletederror') }}");
+</script>
+
+@endif
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-danger">
             <!-- Navbar Brand-->
             <a class="navbar-brand ps-3" href="index.html">Admin - Pet Finder</a>
@@ -70,6 +84,7 @@
                     <div class="container-fluid px-4">
                     <h1 class="mt-4">All Customers with Their Pets</h1>
                         <div class="row">
+                      <div class="d-flex justify-content-end">  <a href="#" class="nav-link text-success" data-bs-toggle="modal" data-bs-target="#securityModal"><i class="fa fa-user-plus" aria-hidden="true"></i><strong>ADD USER</strong></a></div>
     <table class="table">
         <thead>
             <tr>
@@ -84,7 +99,8 @@
                 <th>AGE</th>
                 <th>SPECIES</th>
                 <th>GENDER</th>
-                <th>PICTURE</th>
+                <th>EDIT</th>
+                <th>DELETE</th>
                 
             </tr>
         </thead>
@@ -102,15 +118,38 @@
             <td>{{ $data['pet']->age }}</td>
             <td>{{ $data['pet']->species }}</td>
             <td>{{ $data['pet']->gender }}</td>
-            <td>
+            <td> <a href="{{ route('editCustomers', ['code' => $data['owner']->security_code]) }}" class="btn btn-primary">Edit</a></td>
+            <td> <form action="{{ route('deleteCustomers', ['code' => $data['owner']->security_code]) }}" method="POST" style="display: inline;">
+                @csrf
                
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this record?')">Delete</button>
+            </form>
             </td>
+               
+            
 </tr>
     @endforeach
     </tbody>
     </table>
 
-
+    <div class="modal fade" id="securityModal" tabindex="-1" aria-labelledby="securityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="securityModalLabel">Enter Security code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="securityForm" action="{{ route('check.security.code') }}" method="POST">
+                    @csrf
+                    <input type="text" name="security_code" id="security_code" class="form-control" placeholder="Enter Security Code" required>
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </form>
+              
+            </div>
+        </div>
+    </div>
+</div>
 
                         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
