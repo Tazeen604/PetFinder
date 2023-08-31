@@ -98,15 +98,15 @@
 	          </div>
 	        </div>
 	        <div class="col-md-6 ftco-animate">
-	          <div class="block-7">
+	          <div class="block-7 bg-success">
               @foreach ($pets as $pet)
-	          	<div class="img" style="background-image:url({{ asset($pet->uploadPet) }});"></div>
+	          	<div class="img" style="background-image:url({{ asset('storage/' . $pet->uploadPet) }});"></div>
 	            <div class="text-center p-4">
 	            	<span class="excerpt d-block">Your Pet</span>     
 		            <ul class="pricing-text mb-5 text-warning">
                    
-                    <p>Name: {{ $pet->petname }}</p>
-        <p>Species: {{ $pet->species }}</p>
+                    <h5><strong>Name: {{ $pet->petname }}</strong></h5>
+        <p> {{ $pet->species }}</p>
         <p>Color: {{ $pet->color }}</p>
         <p>Gender: {{ $pet->gender }}</p>
         <p>Age: {{ $pet->age }}</p>
