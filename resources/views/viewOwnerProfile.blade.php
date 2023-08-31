@@ -72,6 +72,7 @@
     <!-- END nav -->
     <section class="ftco-section bg-light">
     	<div class="container">
+		<div class="text-danger"><a href=" {{route('editOwners', ['code' => $owner->security_code])}}"><button type="button" class="btn btn-lg btn-danger text-danger">Edit Your Information</a></div>
     		<div class="row justify-content-center">
           <div class="col-md-7 heading-section text-center ftco-animate">
             <h2>Owner Profile</h2>
@@ -83,7 +84,7 @@
 	          	<div class="img" style="background-image: url(images/pricing-1.jpg);"></div>
 	            <div class="text-center p-4">
 	            	<span class="excerpt d-block">Owner Information</span>
-		            <ul class="pricing-text mb-5 text-warning">
+		            <ul class="pricing-text mb-5 text-dark">
                     <p>Name: {{ $owner->name }}</p>
     <p>Email: {{ $owner->email }}</p>
     <p>Address: {{ $owner->address }}</p>
@@ -100,16 +101,16 @@
 	        <div class="col-md-6 ftco-animate">
 	          <div class="block-7 bg-success">
               @foreach ($pets as $pet)
-	          	<div class="img" style="background-image:url({{ asset('storage/' . $pet->uploadPet) }});"></div>
-	            <div class="text-center p-4">
-	            	<span class="excerpt d-block">Your Pet</span>     
-		            <ul class="pricing-text mb-5 text-warning">
+	          	<div class="img" width=100% height=100% style="background-image:url({{ asset('storage/' . $pet->uploadPet) }}); background-size: cover;  padding-bottom: 100%;"></div>
+	            <div class="text-center p-4 ">
+	              
+		            <ul class="pricing-text mb-5 text-black">
                    
-                    <h5><strong>Name: {{ $pet->petname }}</strong></h5>
-        <p> {{ $pet->species }}</p>
-        <p>Color: {{ $pet->color }}</p>
-        <p>Gender: {{ $pet->gender }}</p>
-        <p>Age: {{ $pet->age }}</p>
+                    <h5><strong>I am {{ $pet->petname }}</strong></h5>
+					<strong> <p class="text-dark"> {{ $pet->species }}</p>
+        <p class="text-dark">Color: {{ $pet->color }}</p>
+        <p class="text-dark">Gender: {{ $pet->gender }}</p>
+        <p class="text-dark">I am  {{ $pet->age }} years old</p></strong>
         @endforeach
 		            </ul>
 	            </div>

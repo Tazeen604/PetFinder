@@ -147,7 +147,7 @@
 
               <div class="form-row">
               <div class="form-group">		
-                <i class="fas fa-envelope"></i>
+              
 					<input type="email" name="email" id="email" class="input-text" placeholder=" &nbsp &nbsp &nbsp &nbsp Owner Email"required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}">
 					@error('email')
            			 <span class="text-danger">{{ $message }}</span>
@@ -156,7 +156,7 @@
 </div>
 				<div class="form-row">
                 <div class="form-group">
-                <i class="fas fa-lock"></i>
+           
 					<input type="password" name="password" id="password" class="input-text" placeholder="&nbsp &nbsp &nbsp &nbsp  Password" required>
 					@error('password')
            			 <span class="text-danger">{{ $message }}</span>

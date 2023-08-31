@@ -74,7 +74,6 @@
               <div class="form-row">
               <div class="form-group">
 				
-                <i class="fas fa-envelope"></i>
 					<input type="email" name="your_email" id="your_email" class="input-text" placeholder=" &nbsp &nbsp &nbsp &nbsp Owner Email"required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}">
 				</div>
 </div>

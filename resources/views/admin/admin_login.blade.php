@@ -130,7 +130,7 @@
             // Hide the div after 10 seconds (10000 milliseconds)
             setTimeout(function() {
                 errorMessageDiv.style.display = 'none';
-            }, 5000);
+            }, );
         }
     });
 </script>

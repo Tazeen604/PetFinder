@@ -59,6 +59,14 @@ Route::post('/delete-customers/{code}', [OwnerController::class, 'deleteCustomer
 Route::post('/delete-security-code/{code}', [DashboardController::class, 'deleteSecurityCodes'])->name('deleteSecurityCodes');
 
 
+// edit owners
+Route::get('/edit_owner/{code}', [OwnerController::class, 'editOwners'])->name('editOwners');
+// update client and client pet
+Route::put('/update-client/{code}', [OwnerController::class, 'updateClient'])->name('updateClient');
+//update pet
+Route::put('/update-client-pet/{code}', [OwnerController::class, 'updateClientPet'])->name('updateClientPet');
+
+
 Route::get('/admin/create', [AdminController::class, 'create'])->name('admin.create');
 Route::post('/admin/store', [AdminController::class, 'store'])->name('admin.store');
 //logout admin

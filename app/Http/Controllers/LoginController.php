@@ -20,9 +20,10 @@ class LoginController extends Controller
 
         // Get the user by name
         $user = Admin::where('name', $name)->first();
-        Session::put('AdminName', $user->name);
+        
         // Check if the user exists and verify the password manually
         if ($user && \Hash::check($password, $user->password)) {
+            Session::put('AdminName', $user->name);
             // Authentication passed, log in the user
             Auth::login($user);
             return redirect()->route('admin.dashboard'); // Replace 'admin.dashboard' with your desired route

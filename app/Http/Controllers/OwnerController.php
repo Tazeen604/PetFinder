@@ -222,6 +222,49 @@ public function viewAllCustomers()
         }
     }
 
+
+
+    // edit view for owners
+    // Edit view for customers
+    public function editOwners($code)
+    {
+        $owner = Owner::where('security_code', $code)->firstOrFail();
+        $pet = Pet::where('security_code', $code)->first();
+    
+        return view('/edit_owner', compact('owner', 'pet'));
+    }
+
+//Update Owner and PEt
+public function updateClient(Request $request, $code)
+{
+    $owner = Owner::where('security_code', $code)->firstOrFail();
+ 
+    // Update Owner fields
+
+    $owner->name = $request->input('name');
+    $owner->address = $request->input('address');
+    $owner->country = $request->input('country');
+    $owner->state = $request->input('state');
+    $owner->phone_no = $request->input('phone_no');
+    $owner->zip_code = $request->input('zip_code');
+    $owner->city = $request->input('city');
+    $owner->save();
+    return redirect()->route('view-owner-profile')->with('success', 'Profile updated successfully.');
+}
+
+    // Update Pet fields
+    public function updateClientPet(Request $request, $code)
+    {
+$pet = Pet::where('security_code', $code)->firstOrFail();
+    $pet->petname = $request->input('petname');
+    $pet->age = $request->input('age');
+    $pet->color = $request->input('color');
+    $pet->save();
+    return redirect()->route('view-owner-profile')->with('success', 'Profile updated successfully.');
+}
+
+
+
     public function logout() {
         Session::flush();
         return redirect('/');
