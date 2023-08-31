@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 use App\Models\Pet;
 use Illuminate\Http\Request;
@@ -27,11 +26,10 @@ class PetController extends Controller
         $data = $validator->validated();
 
         if ($request->hasFile('uploadPet')) {
-           $avatar = $request->file('uploadPet');  
-           $avatarPath = public_path('petImages/') . $avatar;
+            $avatar = $request->file('uploadPet');  
+            $avatarPath = $avatar->store('petImages', 'public');
             $data['uploadPet'] = $avatarPath;
-
-        }
+        }    
     
         Pet::create($data);
 

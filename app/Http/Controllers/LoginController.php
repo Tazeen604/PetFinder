@@ -28,7 +28,7 @@ class LoginController extends Controller
             return redirect()->route('admin.dashboard'); // Replace 'admin.dashboard' with your desired route
         } else {
             // Authentication failed, redirect back to login page with an error message
-            return redirect()->route('admin')->with('error', 'Invalid credentials');
+            return redirect()->route('admin')->with('errorLogin', 'Invalid credentials');
         }
     }
     public function logout() {

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('pets', function (Blueprint $table) {
             $table->id();
             $table->string('security_code')->unique();
-            $table->string('name');
+            $table->string('petname');
             $table->string('gender');
             $table->integer('age');
             $table->string('species');

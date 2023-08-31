@@ -37,6 +37,12 @@
             </div>
         </div>
     @endif
+
+    @if(session('errorLogin'))
+    <div id="error-message" class="alert alert-danger">
+        {{ session('errorLogin') }}
+    </div>
+@endif
 <section class="vh-100" style="background-color: #9A616D;">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
@@ -113,6 +119,21 @@
     }
 </script>
 
+<script>
+    // Wait for the document to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Select the error message div by its id
+        const errorMessageDiv = document.getElementById('error-message');
+        
+        // If the error message div is present
+        if (errorMessageDiv) {
+            // Hide the div after 10 seconds (10000 milliseconds)
+            setTimeout(function() {
+                errorMessageDiv.style.display = 'none';
+            }, 5000);
+        }
+    });
+</script>
 
 
 
