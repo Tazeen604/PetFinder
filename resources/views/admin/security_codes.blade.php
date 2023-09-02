@@ -87,6 +87,7 @@
                 <th>ID</th>
                 <th>Security Code</th>
                 <th>QR Code</th>
+                <th>Status</th>
                 <th>Delete<p class="text-danger">(This is irreversible process,It will delete all customers and pets related to the security code)</p></th>
            
             </tr>
@@ -99,6 +100,23 @@
                     <td>
                         <img src="{{ asset('qrcodes/' . $securityCode->security_code . '.svg') }}" alt="QR Code">
                     </td>
+                    @php
+                // Check if the security code exists in the owner table
+                $ownerExists = App\Models\Owner::where('security_code', $securityCode->security_code)->exists();
+                
+                // Check if the security code exists in the pet table
+                $petExists = App\Models\Pet::where('security_code', $securityCode->security_code)->exists();
+                
+                // Determine the status
+                $status = ($ownerExists && $petExists) ? 'Active' : 'Not Active';
+            @endphp
+            
+          <td>  {{ $status }}</td>
+
+
+
+
+
                   <td> <form action="{{ route('deleteSecurityCodes', $securityCode->security_code) }}" method="POST" style="display: inline;">
                 @csrf
                
